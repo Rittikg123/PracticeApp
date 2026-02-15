@@ -1,15 +1,12 @@
 import streamlit as st
-from databricks.sdk.runtime import spark
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.getOrCreate()
 
 st.title("Claims Dashboard")
 
-# Load data
 df = spark.sql("SELECT * FROM gold_claims")
 pdf = df.toPandas()
-
-# =====================
-# KPIs
-# =====================
 
 st.subheader("Summary Metrics")
 
@@ -22,10 +19,6 @@ col1, col2, col3 = st.columns(3)
 col1.metric("Total Billed", f"${total_billed:,.0f}")
 col2.metric("Total Paid", f"${total_paid:,.0f}")
 col3.metric("Total Outstanding", f"${total_outstanding:,.0f}")
-
-# =====================
-# Table
-# =====================
 
 st.subheader("Claims Detail")
 st.dataframe(pdf)
