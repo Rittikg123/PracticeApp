@@ -1,12 +1,8 @@
 import streamlit as st
-from pyspark.sql import SparkSession
-
-# Use existing Spark session
-spark = SparkSession.getActiveSession()
 
 st.title("Claims Dashboard")
 
-# Load data
+# Use built-in spark (Databricks provides it)
 df = spark.sql("SELECT * FROM hive_metastore.default.gold_claims")
 
 pdf = df.toPandas()
